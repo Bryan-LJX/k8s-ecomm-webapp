@@ -1,16 +1,16 @@
-## Web App Deployment in Kubernetes (K8s) Cluster
+# Web App Deployment in Kubernetes (K8s) Cluster
 
 A Project to simulate a deployment of a E-Commerce Website on a Kubernetes Cluster.
 
-## Goals
+# Goals
 
 To test my proficiency in Kubernetes and containerization, demonstrating the ability to deploy, scale, and manage web applications efficiently in a K8s environment, underscoring cloud-native deployment skills.
 
-##  Process
+#  Process
 
 The overall flow into implementing my project is as follows:
 
-# 1. Containerize my E-Commerce Website and Database
+## 1. Containerize my E-Commerce Website and Database
 
 To get started, I firstly prepared the source code for the e-commerce website application using PHP. It’s simplified to demonstrate how PHP works with MySQL to manage products, a cart, and orders.
 
@@ -39,11 +39,11 @@ I then created a Dockerfile with the following instructions:
    - Update database connection strings to point to a Kubernetes service named `mysql-service`.
    - Expose port `80` to allow traffic to the web server.
 
-2. Set Up a Kubernetes Cluster
+## 2. Set Up a Kubernetes Cluster
 
-3. Deploy my Website to Kubernetes
+## 3. Deploy my Website to Kubernetes
 
-4. Expose my Website
+## 4. Expose my Website
 
 
 # Resources
