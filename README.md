@@ -39,6 +39,18 @@ I then created a Dockerfile with the following instructions:
    - Update database connection strings to point to a Kubernetes service named `mysql-service`.
    - Expose port `80` to allow traffic to the web server.
 
+I then created a new Docker image using the Dockerfile by running the command:
+
+> $ docker build -t bryanlieu/ecomm-web .
+
+I then pushed the newly created Docker image onto my Docker Hub repository:
+
+> $ docker push bryanlieu/ecomm-web
+
+If pushing the image fails with the error `denied: requested access to the resource is denied` , remember to login to the Docker Hub registry with the account credentials first:
+
+> $ docker login docker.io -u bryanlieu -p ******
+
 ## 2. Set Up a Kubernetes Cluster
 
 ## 3. Deploy my Website to Kubernetes
