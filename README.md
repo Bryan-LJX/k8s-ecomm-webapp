@@ -51,7 +51,35 @@ If pushing the image fails with the error `denied: requested access to the resou
 
 > $ docker login docker.io -u bryanlieu -p ******
 
+Instead of containerizing the database, I instead prepared a database initialization script (`db-load-script.sql`) to be used with Kubernetes ConfigMaps and the official MariaDB image. The script sets up the database schema and populate any necessary data (e.g., tables, relationships).
+
+Database Name: The database is named `ecommerce`, as specified in the `config.php`.
+
+Tables: I added the tables users, products, orders, and order_items to support a basic e-commerce schema.
+- users table: Stores user information like username, email, and password.
+- products table: Stores product information.
+- orders table: Tracks orders, linking them to users via a foreign key.
+- order_items table: Tracks individual items in orders, linking them to products and orders.
+
+Initial Data:
+- Insert a default admin user (admin) with a hashed password (MD5('password')).
+- Insert sample products into the products table.
+
 ## 2. Set Up a Kubernetes Cluster
+
+- **Cluster Creation**: As I already have a [Home Lab environment running on vSphere 7](https://github.com/Bryan-LJX/homelab), I deployed my cluster on 3 ubuntu virtual machines in my lab. There are many k8s installation scripts out there, the one I used is from [killer-sh's cks course.](https://github.com/killer-sh/cks-course-environment/tree/master/cluster-setup/latest)
+- **Outcome**: A fully operational Kubernetes cluster ready for deployment:
+
+> root@ecomm-web-cp01:~# kubectl get no
+
+> NAME &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &ensp; STATUS &ensp; ROLES &emsp; &emsp; &emsp; &ensp; AGE &emsp; VERSION
+
+> ecomm-web-cp01    &emsp; &emsp; &ensp;   Ready  &emsp;  control-plane  &emsp; 63m  &emsp;   v1.30.5
+
+> ecomm-web-worker01 &emsp;   Ready &emsp;   none &emsp; &emsp; &emsp; &ensp;  &nbsp;      14m  &emsp;   v1.30.5
+
+> ecomm-web-worker02  &emsp; Ready  &emsp;  none    &emsp; &emsp; &emsp; &ensp;  &nbsp;     2m33s &emsp;  v1.30.5
+
 
 ## 3. Deploy my Website to Kubernetes
 
