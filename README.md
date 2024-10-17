@@ -96,6 +96,10 @@ To deploy the e-commerce website application, simply run the command:
 
 > root@ecomm-web-cp01:~# kubectl apply -f deploy.yaml
 
+The following resources are deployed in my cluster after running the command:
+
+<img src="README.assets/k8s-overview.png" alt="k8s-overview" style="zoom:75%;" />
+
 ## 4. Results
 
 I was successfully able to access my e-commerce website application by navigating to the cluster's worker node IP address + NodePort number on a web browser.
