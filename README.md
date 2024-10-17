@@ -12,6 +12,8 @@ The overall flow into implementing my project is as follows:
 
 ## 1. Containerize my E-Commerce Website and Database
 
+### E-Commerce Website
+
 To get started, I firstly prepared the source code for the e-commerce website application using PHP. It’s simplified to demonstrate how PHP works with MySQL to manage products, a cart, and orders.
 
 The project structure will be:
@@ -49,6 +51,8 @@ I then pushed the newly created Docker image onto my Docker Hub repository:
 If pushing the image fails with the error `denied: requested access to the resource is denied` , remember to login to the Docker Hub registry with the account credentials first:
 
 > $ docker login docker.io -u bryanlieu -p ******
+
+### Database
 
 Instead of containerizing the database, I instead prepared a database initialization script (`db-load-script.sql`) to be used with Kubernetes ConfigMaps and the official MariaDB image. The script sets up the database schema and populate any necessary data (e.g., tables, relationships).
 
