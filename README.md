@@ -106,7 +106,7 @@ I was successfully able to access my e-commerce website application by navigatin
 
 To obtain info on the worker node IP & port number, run the following command on the k8s cluster:
 
-> root@ecomm-web-cp01:~# kubectl get pod,svc -n e-comm
+> root@ecomm-web-cp01:~# kubectl get pod,svc -n e-comm -o wide
 
 The worker node where the e-comm-app pod is deployed on can be seen from the command output, as well as the NodePort number.
 
