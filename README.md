@@ -16,10 +16,6 @@ To get started, I firstly prepared the source code for the e-commerce website ap
 
 The project structure will be:
 
-Dockerfile
-
-|
-
 src/
 
 ├── index.php
