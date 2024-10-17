@@ -28,14 +28,17 @@ src/
 
 └── style.css
 
-I then created a Dockerfile with the following instructions:
+I then created a `Dockerfile` with the following instructions:
    - Use `php:7.4-apache` as the base image.
    - Install `mysqli` extension for PHP.
    - Copy the application source code to `/var/www/html/`.
    - Update database connection strings to point to a Kubernetes service named `mysql-service`.
    - Expose port `80` to allow traffic to the web server.
 
-I then created a new Docker image using the Dockerfile by running the command:
+
+**NOTE**: The docker engine must installed on the machine (preferably Linux) prior to generating the docker image. Refer to the [Docker Documentation](https://docs.docker.com/engine/install/) for install instructions.
+
+Created a new Docker image using the Dockerfile by running the command:
 
 > $ docker build -t bryanlieu/ecomm-web .
 
