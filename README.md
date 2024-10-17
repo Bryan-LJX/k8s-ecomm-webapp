@@ -92,6 +92,10 @@ Initial Data:
 - A Deployment named `e-comm-app`using the Dockerfile `ecomm-web` image I created and pushed to my Docker Hub registry earlier.
 - Finally, to expose the e-commerce website (PHP application), I created a Service resource named `e-comm-service` to map external traffic to the pod. As my k8s cluster is not on a Cloud Environment, I used the NodePort servicetype instead of LoadBalancer.
 
+To deploy the e-commerce website application, simply run the command:
+
+> root@ecomm-web-cp01:~# kubectl apply -f deploy.yaml
+
 ## 4. Results
 
 
