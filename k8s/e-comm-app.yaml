@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: e-comm-app
+  namespace: e-comm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: e-comm-app
+  template:
+    metadata:
+      labels:
+        app: e-comm-app
+    spec:
+      containers:
+      - name: e-comm-app
+        image: bryanlieu/ecomm-web:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: DB_HOST
+          value: "mysql-service"
+        - name: DB_USER
+          value: "user1"
+        - name: DB_PASS
+          value: "P@ssword123"
+        - name: DB_NAME
+          value: "ecommerce"
