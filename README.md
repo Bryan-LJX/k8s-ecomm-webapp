@@ -98,7 +98,21 @@ To deploy the e-commerce website application, simply run the command:
 
 ## 4. Results
 
+I was successfully able to access my e-commerce website application by navigating to the cluster's worker node IP address + NodePort number on a web browser.
 
+To obtain info on the worker node IP & port number, run the following command on the k8s cluster:
+
+> root@ecomm-web-cp01:~# kubectl get pod,svc -n e-comm
+
+The worker node where the e-comm-app pod is deployed on can be seen from the command output, as well as the NodePort number.
+
+On the web browser, the 3 catalog items from the database deployment can be seen without any issues:
+
+<img src="README.assets/website-1.png" alt="website-1" style="zoom:75%;" />
+
+The original source code also features a cart function where I was successfully able to add & remove the 3 catalog items into my cart:
+
+<img src="README.assets/website-2.png" alt="website-2" style="zoom:75%;" />
 
 
 # Resources
