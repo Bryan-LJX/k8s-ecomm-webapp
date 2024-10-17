@@ -114,6 +114,16 @@ The original source code also features a cart function where I was successfully 
 
 <img src="README.assets/website-2.png" alt="website-2" style="zoom:75%;" />
 
+# Future
+
+- Add a feature toggle to the web application to enable a "dark mode" for the website.
+- Scaling the Application
+- Perform Rolling Updates
+- Roll Back the Deployment
+- Autoscale the Application
+- Implement Liveness and Readiness Probes
+- Utilize ConfigMaps and Secrets
+
 
 # Resources
 
