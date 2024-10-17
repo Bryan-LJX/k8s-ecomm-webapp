@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: e-comm-db
+  namespace: e-comm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: e-comm-db
+  template:
+    metadata:
+      labels:
+        app: e-comm-db
+    spec:
+      containers:
+      - name: mariadb
+        image: mariadb:latest
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "P@ssword123"
+        - name: MYSQL_DATABASE
+          value: "db01"
+        - name: MYSQL_USER
+          value: "user0"
+        - name: MYSQL_PASSWORD
+          value: "P@ssword123"
+        volumeMounts:
+        - name: init-script
+          mountPath: /docker-entrypoint-initdb.d/db-load-script.sql
+          subPath: db-load-script.sql
+      volumes:
+      - name: init-script
+        configMap:
+          name: mariadb-init-script
