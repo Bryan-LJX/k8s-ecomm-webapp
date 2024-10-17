@@ -68,6 +68,7 @@ Initial Data:
 ## 2. Set Up a Kubernetes Cluster
 
 **Cluster Creation**: As I already have a [Home Lab environment running on vSphere 7](https://github.com/Bryan-LJX/homelab), I deployed my cluster on 3 ubuntu virtual machines in my lab. There are many k8s installation scripts out there, the one I used is from [killer-sh's cks course.](https://github.com/killer-sh/cks-course-environment/tree/master/cluster-setup/latest)
+
 **Outcome**: A fully operational Kubernetes cluster ready for deployment:
 
 > root@ecomm-web-cp01:~# kubectl get no
