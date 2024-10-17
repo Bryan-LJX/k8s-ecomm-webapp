@@ -82,9 +82,19 @@ Initial Data:
 > ecomm-web-worker02  &emsp; Ready  &emsp;  none    &emsp; &emsp; &emsp; &ensp;  &nbsp;     2m33s &emsp;  v1.30.5
 
 
-## 3. Deploy my Website to Kubernetes
+## 3. Deploy my Website to Kubernetes and expose it
 
-## 4. Expose my Website
+**Kubernetes Deployment**: Created a `deploy.yaml` manifest which consists of the following:
+
+- A ConfigMap named `mariadb-init-script` containing my SQL initialization script `db-load-script.sql`
+- A Deployment manifest using MariaDB named `e-comm-db`, with the ConfigMap `mariadb-init-script` mounted to the container at /docker-entrypoint-initdb.d/
+- A Service named `mysql-service` whcih exposes the `e-comm-db` deployment via port 3306. The service name must tally with the DB_NAME variable defined in the original `config.php` file.
+- A Deployment named `e-comm-app`using the Dockerfile `ecomm-web` image I created and pushed to my Docker Hub registry earlier.
+- Finally, to expose the e-commerce website (PHP application), I created a Service resource named `e-comm-service` to map external traffic to the pod. As my k8s cluster is not on a Cloud Environment, I used the NodePort servicetype instead of LoadBalancer.
+
+## 4. Results
+
+
 
 
 # Resources
