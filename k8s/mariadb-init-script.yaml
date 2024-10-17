@@ -3,7 +3,7 @@ data:
   db-load-script.sql: "-- Create the database if it doesn't already exist\nCREATE
     DATABASE IF NOT EXISTS ecommerce;\n\n-- Use the created database\nUSE ecommerce;\n\n--
     Create the new user 'user1' with the specified password\nCREATE USER IF NOT EXISTS
-    'user1'@'%' IDENTIFIED BY 'P@ssword123';\n\n-- Grant all privileges on the ecommerce_db
+    'user1'@'%' IDENTIFIED BY '*****';\n\n-- Grant all privileges on the ecommerce_db
     to the new user\nGRANT ALL PRIVILEGES ON ecommerce.* TO 'user1'@'%';\n\n-- Apply
     the changes\nFLUSH PRIVILEGES;\n\n-- Create the users table\nCREATE TABLE IF NOT
     EXISTS users (\n  id INT AUTO_INCREMENT PRIMARY KEY,\n  username VARCHAR(100)
