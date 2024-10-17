@@ -63,7 +63,7 @@ Initial Data:
 
 ## 2. Set Up a Kubernetes Cluster
 
-**Cluster Creation**: As I already have a [Home Lab environment running on vSphere 7](https://github.com/Bryan-LJX/homelab), I deployed my cluster on 3 ubuntu virtual machines in my lab. There are many k8s installation scripts out there, the one I used is from [killer-sh's cks course.](https://github.com/killer-sh/cks-course-environment/tree/master/cluster-setup/latest)
+**Cluster Creation**: As I already have a [Home Lab environment running on vSphere 7](https://github.com/Bryan-LJX/homelab), I deployed my cluster on ubuntu virtual machines in my lab. I deployed 3 ubuntu virtual machines in my home lab vSphere Cluster (1 control plane, 2 worker nodes). I then used a bash script to perform the required pre-configurations, install the containerd and kubeadm/kubectl/kubelet binaries, and finally initialize the cluster via kubeadm.  There are many k8s installation scripts out there, the one I used is from [killer-sh's cks course.](https://github.com/killer-sh/cks-course-environment/tree/master/cluster-setup/latest) Refer to the [Kubernetes Documentation](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/) for more information on the detailed steps for cluster setup.
 
 **Outcome**: A fully operational Kubernetes cluster ready for deployment:
 
@@ -84,7 +84,7 @@ Initial Data:
 
 - A ConfigMap named `mariadb-init-script` containing my SQL initialization script `db-load-script.sql`
 - A Deployment manifest using MariaDB named `e-comm-db`, with the ConfigMap `mariadb-init-script` mounted to the container at /docker-entrypoint-initdb.d/
-- A Service named `mysql-service` whcih exposes the `e-comm-db` deployment via port 3306. The service name must tally with the DB_NAME variable defined in the original `config.php` file.
+- A Service named `mysql-service` which exposes the `e-comm-db` deployment via port 3306. The service name must tally with the DB_NAME variable defined in the original `config.php` file.
 - A Deployment named `e-comm-app`using the Dockerfile `ecomm-web` image I created and pushed to my Docker Hub registry earlier.
 - Finally, to expose the e-commerce website (PHP application), I created a Service resource named `e-comm-service` to map external traffic to the pod. As my k8s cluster is not on a Cloud Environment, I used the NodePort servicetype instead of LoadBalancer.
 
