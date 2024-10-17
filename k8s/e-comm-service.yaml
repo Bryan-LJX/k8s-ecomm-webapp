@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: e-comm-service
+  namespace: e-comm
+  labels:
+    app: e-comm-app
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    app: e-comm-app
+  type: NodePort # Used NodePort as my lab environment is not on Cloud
