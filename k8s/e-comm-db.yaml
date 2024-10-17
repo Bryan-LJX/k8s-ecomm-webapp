@@ -18,13 +18,13 @@ spec:
         image: mariadb:latest
         env:
         - name: MYSQL_ROOT_PASSWORD
-          value: "P@ssword123"
+          value: "*****"
         - name: MYSQL_DATABASE
           value: "db01"
         - name: MYSQL_USER
           value: "user0"
         - name: MYSQL_PASSWORD
-          value: "P@ssword123"
+          value: "*****"
         volumeMounts:
         - name: init-script
           mountPath: /docker-entrypoint-initdb.d/db-load-script.sql
