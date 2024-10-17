@@ -24,6 +24,6 @@ spec:
         - name: DB_USER
           value: "user1"
         - name: DB_PASS
-          value: "P@ssword123"
+          value: "*****"
         - name: DB_NAME
           value: "ecommerce"
