@@ -1,0 +1,135 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: e-comm
+spec: {}
+---
+apiVersion: v1
+data:
+  db-load-script.sql: "-- Create the database if it doesn't already exist\nCREATE
+    DATABASE IF NOT EXISTS ecommerce;\n\n-- Use the created database\nUSE ecommerce;\n\n--
+    Create the new user 'user1' with the specified password\nCREATE USER IF NOT EXISTS
+    'user1'@'%' IDENTIFIED BY '****';\n\n-- Grant all privileges on the ecommerce_db
+    to the new user\nGRANT ALL PRIVILEGES ON ecommerce.* TO 'user1'@'%';\n\n-- Apply
+    the changes\nFLUSH PRIVILEGES;\n\n-- Create the users table\nCREATE TABLE IF NOT
+    EXISTS users (\n  id INT AUTO_INCREMENT PRIMARY KEY,\n  username VARCHAR(100)
+    NOT NULL,\n  email VARCHAR(100) NOT NULL,\n  password VARCHAR(255) NOT NULL,\n
+    \ created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n\n-- Create the products
+    table\nCREATE TABLE IF NOT EXISTS products (\n  id INT AUTO_INCREMENT PRIMARY
+    KEY,\n  name VARCHAR(255) NOT NULL,\n  description TEXT,\n  price DECIMAL(10,2)
+    NOT NULL,\n  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n\n-- Create the
+    orders table\nCREATE TABLE IF NOT EXISTS orders (\n  id INT AUTO_INCREMENT PRIMARY
+    KEY,\n  user_id INT NOT NULL,\n  total DECIMAL(10,2) NOT NULL,\n  created_at TIMESTAMP
+    DEFAULT CURRENT_TIMESTAMP,\n  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE
+    CASCADE\n);\n\n-- Create the order_items table\nCREATE TABLE IF NOT EXISTS order_items
+    (\n  id INT AUTO_INCREMENT PRIMARY KEY,\n  order_id INT NOT NULL,\n  product_id
+    INT NOT NULL,\n  quantity INT NOT NULL,\n  price DECIMAL(10,2) NOT NULL,\n  created_at
+    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n  FOREIGN KEY (order_id) REFERENCES orders(id)
+    ON DELETE CASCADE,\n  FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE
+    CASCADE\n);\n\n-- Insert initial data (optional)\n-- Inserting a default admin
+    user with hashed password\nINSERT INTO users (username, email, password) VALUES
+    \n('admin', 'admin@example.com', MD5('password'));\n\n-- Insert sample products\nINSERT
+    INTO products (name, description, price) VALUES \n('Daredevil', 'The Man Without
+    Fear', 19.99),\n('Moon Knight', 'The Fist of Khonshu', 29.99),\n('Ghost Rider',
+    'The Spirit of Vengeance', 39.99);\n"
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: mariadb-init-script
+  namespace: e-comm
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: e-comm-db
+  namespace: e-comm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: e-comm-db
+  template:
+    metadata:
+      labels:
+        app: e-comm-db
+    spec:
+      containers:
+      - name: mariadb
+        image: mariadb:latest
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "****"
+        - name: MYSQL_DATABASE
+          value: "db01"
+        - name: MYSQL_USER
+          value: "user0"
+        - name: MYSQL_PASSWORD
+          value: "****"
+        volumeMounts:
+        - name: init-script
+          mountPath: /docker-entrypoint-initdb.d/db-load-script.sql
+          subPath: db-load-script.sql
+      volumes:
+      - name: init-script
+        configMap:
+          name: mariadb-init-script
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: e-comm
+  name: mysql-service
+  labels:
+    app: e-comm-db
+spec:
+  ports:
+    - port: 3306
+      targetPort: 3306
+  selector:
+    app: e-comm-db
+  clusterIP: None  # Headless service for direct pod-to-pod communication
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: e-comm-app
+  namespace: e-comm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: e-comm-app
+  template:
+    metadata:
+      labels:
+        app: e-comm-app
+    spec:
+      containers:
+      - name: e-comm-app
+        image: bryanlieu/ecomm-web:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: DB_HOST
+          value: "mysql-service"
+        - name: DB_USER
+          value: "user1"
+        - name: DB_PASS
+          value: "****"
+        - name: DB_NAME
+          value: "ecommerce"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: e-comm-service
+  namespace: e-comm
+  labels:
+    app: e-comm-app
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    app: e-comm-app
+  type: NodePort # Used NodePort as my lab environment is not on Cloud
