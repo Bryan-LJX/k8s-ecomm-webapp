@@ -121,6 +121,28 @@ The original source code also features a cart function where I was successfully 
 
 <img src="README.assets/website-2.png" alt="website-2" style="zoom:75%;" />
 
+# Scaling the Application
+
+- **Evaluate the current load:** Run `kubectl get pods -n e-comm` and `kubectl get deploy -n e-comm`  to assess the current number of running pods and deployments in the cluster:
+
+<img src="README.assets/Scale-app-1.png" alt="Scale-app-1" style="zoom:75%;" />
+
+- **Scale Up**: Increased replicas in my e-comm-app and e-comm-db deployment by using `kubectl scale deployment/e-comm-app --replicas=6 -n e-comm` and `kubectl scale deployment/e-comm-db --replicas=6 -n e-comm` to handle the increased load.
+
+- **Monitor Scaling**: Observe the deployment scaling up with `kubectl get pods -n e-comm`.
+
+<img src="README.assets/Scale-app-2.png" alt="Scale-app-2" style="zoom:75%;" />
+
+<img src="README.assets/Scale-app-3.png" alt="Scale-app-3" style="zoom:75%;" />
+
+<img src="README.assets/Scale-db-1.png" alt="Scale-db-1" style="zoom:75%;" />
+
+<img src="README.assets/Scale-db-2.png" alt="Scale-db-2" style="zoom:75%;" />
+
+-  **Outcome**: The application is able to scale up to handle increased traffic:
+
+<img src="README.assets/website-1.png" alt="website-1" style="zoom:75%;" />
+  
 # Future
 
 - Add a feature toggle to the web application to enable a "dark mode" for the website.
