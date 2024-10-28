@@ -146,7 +146,6 @@ The original source code also features a cart function where I was successfully 
 # Future
 
 - Add a feature toggle to the web application to enable a "dark mode" for the website.
-- Scaling the Application
 - Perform Rolling Updates
 - Roll Back the Deployment
 - Autoscale the Application
