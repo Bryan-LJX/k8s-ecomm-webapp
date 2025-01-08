@@ -109,13 +109,20 @@ spec:
         image: bryanlieu/ecomm-web:latest
         ports:
         - containerPort: 80
+        resources:
+          requests:
+            cpu: "100m"   # Request 0.1 CPU core
+            memory: "128Mi"
+          limits:
+            cpu: "500m"   # Limit to 0.5 CPU core
+            memory: "512Mi"
         env:
         - name: DB_HOST
           value: "mysql-service"
         - name: DB_USER
           value: "user1"
         - name: DB_PASS
-          value: "****"
+          value: "P@ssword123"
         - name: DB_NAME
           value: "ecommerce"
 ---
