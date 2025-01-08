@@ -143,12 +143,87 @@ The original source code also features a cart function where I was successfully 
 
 <img src="README.assets/website-1.png" alt="website-1" style="zoom:75%;" />
   
+# Autoscale the Application
+
+## Pre-requisites
+Before autoscaling can be enabled, the following needs to be available:
+
+**Metrics Server**: The Kubernetes cluster must have the [Metrics Server](https://github.com/kubernetes-sigs/metrics-server) installed to monitor CPU and memory usage. The metrics server is a kubernetes open-source tool that collects resource metrics from Kubelets and exposes them in Kubernetes apiserver through Metrics API for use by Horizontal Pod Autoscaler and Vertical Pod Autoscaler.
+
+The Metrics Server can be deployed by pulling its deployment manifest from the public GitHub repo:
+
+> root@ecomm-web-cp01:~# kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
+Verify all resources needed for the Metrics Server are deployed successfully:
+
+<img src="README.assets/metrics-1.png" alt="metrics-1" style="zoom:75%;" />
+
+**Resource Requests and Limits**: The `e-comm-app` Deployment must define CPU and/or memory `requests` and `limits` for the containers.
+
+This can be done by modifying the e-comm-app deployment yaml manifest:
+
+<img src="README.assets/resource-1.png" alt="resource-1" style="zoom:75%;" />
+
+- `requests`: The minimum resources guaranteed to the container.
+
+- `limits`: The maximum resources a container can use.
+
+Apply the updated deployment with:
+
+> root@ecomm-web-cp01:~# kubectl apply -f deploy.yaml
+
+
+## Create the Horizontal Pod Autoscaler (HPA)
+**Autoscaling Based on CPU Utilization**: Create an `HPA` resource to scale the number of pods based on average CPU utilization:
+
+<img src="README.assets/hpa-1.png" alt="hpa-1" style="zoom:75%;" />
+
+- `minReplicas`: Minimum number of pods.
+- `maxReplicas`: Maximum number of pods.
+- `averageUtilization`: Target average CPU utilization per pod.
+
+Apply the HPA resource:
+
+> root@ecomm-web-cp01:~# kubectl apply -f e-comm-app-hpa.yaml
+
+Verify the HPA resource:
+
+<img src="README.assets/hpa-2.png" alt="hpa-2" style="zoom:75%;" />
+
+## Test the Autoscaling
+
+I tested the autoscaling function by increasing the load on the `e-comm-app` application using the `hey` tool:
+
+> user1@ecomm-web-cp01:~$ sudo apt install hey
+
+> user1@ecomm-web-cp01:~$ hey -z 1m -c 50 "http://E-COMM-APP IP ADDR"
+
+- `-z 1m`: Run the test for 1 minute.
+- `-c 50`: Simulate 50 concurrent users.
+
+After a while, check the number of pods:
+
+<img src="README.assets/hpatest-1.png" alt="hpatest-1" style="zoom:75%;" />
+
+<img src="README.assets/hpatest-2.png" alt="hpatest-2" style="zoom:75%;" />
+
+<img src="README.assets/hpatest-3.png" alt="hpatest-3" style="zoom:75%;" />
+
+As expected, observed the number of pods is scaled up by the HPA due to the CPU usage exceeding the threshold by viewing the deployment events:
+
+<img src="README.assets/hpatest-4.png" alt="hpatest-4" style="zoom:75%;" />
+
+After the load test completes, observed the number of pods is automatically scaled down back to its original count gradually:
+
+<img src="README.assets/hpatest-5.png" alt="hpatest-5" style="zoom:75%;" />
+
+<img src="README.assets/hpatest-6.png" alt="hpatest-6" style="zoom:75%;" />
+
 # Future
 
 - Add a feature toggle to the web application to enable a "dark mode" for the website.
 - Perform Rolling Updates
 - Roll Back the Deployment
-- Autoscale the Application
 - Implement Liveness and Readiness Probes
 - Utilize ConfigMaps and Secrets
 
