@@ -196,7 +196,7 @@ I tested the autoscaling function by increasing the load on the `e-comm-app` app
 
 > user1@ecomm-web-cp01:~$ sudo apt install hey
 
-> user1@ecomm-web-cp01:~$ hey -z 1m -c 50 "http://E-COMM-APP IP ADDR"
+> user1@ecomm-web-cp01:~$ hey -z 1m -c 50 "E-COMM-APP HTTP URL"
 
 - `-z 1m`: Run the test for 1 minute.
 - `-c 50`: Simulate 50 concurrent users.
